@@ -1,17 +1,41 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Knockout Project</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js" ></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+
   </head>
-  <body data-bind="css: {'background' : isImportant}">
+  <body class="background">
     <h1 data-bind="text: title, css: {'title': isImportant}"></h1>
-    <div data-bind="css: {'container' : isImportant}">
-      <div data-bind="css:{'inputContainer': isImportant}">
-        <input placeholder="Enter task" />
-        <button data-bind="click:addTask">Add Task</button> 
-    </div>
+    <div class="container">
+      <div class="inputContainer">
+        <input placeholder="Enter task" data-bind="value: text, valueUpdate: 'afterkeydown'" />
+        <div class="addButtonContainer" data-bind="click: addTask">
+          <i class="fas fa-plus" ></i>
+        </div>
+      </div>
+      <div class="scrollableList" data-bind="foreach: tasks">
+        <div class="rowContainer">
+          <div class="textContainer">
+            <i 
+              class="fa" 
+              data-bind="
+                css: done() ? 'fa-square-check' : 'fa-square',
+                style: { color: '#44576D', cursor: 'pointer' },
+                click: $parent.toggleTask
+              ">
+            </i>
+            <h1 data-bind="text: name, css: { done: done }"></h1>
+          </div>
+          <i 
+            class="fas fa-trash"  
+            data-bind="click: $parent.deleteTask"
+            style="color: red; cursor: pointer;">
+          </i>
+        </div>
+      </div>
+
     </div>
     <script src="app.js"></script>
   </body>
@@ -46,7 +70,7 @@
     padding-left: 50px;
     padding-right: 50px;
     padding-bottom: 50px;
-    width: 599px;
+    width: 600;
     height: 533px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -71,5 +95,56 @@
     font-size: 20px;
     color: #29353C;
     padding-left: 10px;
+  }
+  .addButtonContainer{
+    background: transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 42px;
+    height: 39px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+  }
+  .addButtonContainer button{
+    border: 0;
+    outline: none;
+    background: transparent;
+    flex: 1;
+    font-weight: medium;
+    font-size: 20px;
+    color: #29353C;
+  }
+  .scrollableList {
+    flex: 1;
+    overflow-y: auto;
+    width: 100%;
+  }
+  .rowContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .textContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 30px;
+  }
+  h1 {
+      font-size: 20px;
+      margin-left: 13px;
+      color: #29353C;
+  }
+  .done {
+      text-decoration: line-through;
+      color: '#768A96';
   }
 </style>
