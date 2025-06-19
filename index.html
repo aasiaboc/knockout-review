@@ -15,7 +15,15 @@
           <i class="fas fa-plus" ></i>
         </div>
       </div>
-      <div class="scrollableList" data-bind="foreach: tasks">
+      <div class="filterContainer">
+        <label for="filter">Filter:</label>
+        <select data-bind="value: filter  ">
+          <option value="all">All</option>
+          <option value="active">Pending</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+      <div class="scrollableList" data-bind="foreach: filteredTasks">
         <div class="rowContainer">
           <div class="textContainer">
             <i 
@@ -28,11 +36,19 @@
             </i>
             <h1 data-bind="text: name, css: { done: done }"></h1>
           </div>
-          <i 
-            class="fas fa-trash"  
-            data-bind="click: $parent.deleteTask"
-            style="color: red; cursor: pointer;">
-          </i>
+          <div class="actionButtons">
+            <i 
+              class="fas fa-pencil-alt"  
+              data-bind="click: $parent.editTask"
+              style="color: gray; cursor: pointer;">
+            </i>
+            <i 
+              class="fas fa-trash"  
+              data-bind="click: $parent.deleteTask"
+              style="color: red; cursor: pointer;">
+            </i>
+          </div>
+          
         </div>
       </div>
 
@@ -42,36 +58,35 @@
 </html>
 
 <style>
-  .background{
+  html, body {
     margin: 0;
-    padding: 0;
+    padding: 10px;
     background-color: #F3F3F3;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 30px;
+    flex: 1;
+    width: 100%;
+    overflow-y: auto;
   }
   .title{
     font-family:'Courier New', Courier, monospace;
     font-size: 60px;           
     color: #29353C;
     letter-spacing: 10px;  
-    font-family: 'Poppins';    
     font-weight: medium;  
-    margin-bottom: 10px; 
   }
   .container{
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #F9F9F9;
-    padding-top:40px;
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-bottom: 50px;
-    width: 600;
-    height: 533px;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    min-height: 400px;
+    height: 550px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: box-shadow 0.3s ease;
@@ -92,7 +107,7 @@
     flex: 1;
     font-family: 'Poppins';  
     font-weight: normal;  
-    font-size: 20px;
+    font-size: 18px;
     color: #29353C;
     padding-left: 10px;
   }
@@ -117,6 +132,29 @@
     font-size: 20px;
     color: #29353C;
   }
+  .filterContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+    justify-content: flex-end;
+    font-family: 'Poppins';
+    font-size: 14px;
+    color: #29353C;
+    gap:10px;
+  }
+
+  .filterContainer select {
+    border: 0;
+    outline: none;
+    background: transparent;
+    border: 1px solid #44576D;
+    border-radius: 20px;
+    background-color: white;
+    color: #29353C;
+    font-family: 'Poppins';
+  }
+
   .scrollableList {
     flex: 1;
     overflow-y: auto;
@@ -126,7 +164,6 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    height: 40px;
     justify-content: space-between;
     margin-bottom: 10px;
     padding-left: 15px;
@@ -135,8 +172,22 @@
   .textContainer {
     display: flex;
     flex-direction: row;
+    align-items: center; 
+    gap: 10px;
+  }
+  .textContainer h1 {
+    font-size: 20px;
+    margin: 0 13px 0 13px;
+    color: #29353C;
+    word-break: break-word;
+    white-space: normal;
+    flex: 1;
+  }
+  .actionButtons {
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    height: 30px;
+    gap: 20px;
   }
   h1 {
       font-size: 20px;
